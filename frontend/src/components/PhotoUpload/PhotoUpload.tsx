@@ -6,7 +6,7 @@ import { ChevronLeftIcon } from "../ConnectAccounts/icons";
 const MAX_PHOTOS = 6;
 
 interface PhotoUploadProps {
-  onContinue: () => void;
+  onContinue: (photos: string[]) => void;
 }
 
 function PlusIcon({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
@@ -213,12 +213,13 @@ export function PhotoUpload({ onContinue }: PhotoUploadProps) {
               Add at least 1 photo to continue
             </div>
           )}
+
         </div>
 
         {/* ── Sticky CTA ── */}
         <div style={styles.stickyBottom}>
           <button
-            onClick={photos.length > 0 ? onContinue : undefined}
+            onClick={photos.length > 0 ? () => onContinue(photos) : undefined}
             style={{
               ...styles.ctaButton,
               background: photos.length > 0 ? COLORS.softPeriwinkle : `${COLORS.softPeriwinkle}4D`,

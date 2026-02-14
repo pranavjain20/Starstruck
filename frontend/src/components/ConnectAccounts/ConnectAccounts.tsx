@@ -110,7 +110,7 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
     0,
   );
 
-  const canContinue = connected.spotify;
+  const canContinue = Object.values(connected).some(Boolean);
 
   const simulateConnect = useCallback((id: ServiceId) => {
     setLoading((prev) => ({ ...prev, [id]: true }));

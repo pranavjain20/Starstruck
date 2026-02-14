@@ -27,3 +27,22 @@ class CoachingCard(BaseModel):
 class CoachingResponse(BaseModel):
     user_a_cards: list[CoachingCard]
     user_b_cards: list[CoachingCard]
+
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+
+class CoachChatRequest(BaseModel):
+    user_a_name: str = ""
+    user_b_name: str = ""
+    user_a_dossier: dict
+    user_b_dossier: dict
+    crossref: dict
+    message: str
+    history: list[ChatMessage] = []
+
+
+class CoachChatResponse(BaseModel):
+    reply: str

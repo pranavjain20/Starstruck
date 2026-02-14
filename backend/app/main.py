@@ -5,8 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
 from app.config import settings
-from app.models.schemas import MatchRequest, CoachingResponse
+from app.models.schemas import MatchRequest, CoachingResponse, CoachChatRequest, CoachChatResponse
 from app.graph.builder import build_graph
+from app.services.llm import LLMService
 
 app = FastAPI(title="Starstruck", version="0.1.0")
 
@@ -19,6 +20,7 @@ app.add_middleware(
 )
 
 pipeline = build_graph()
+llm_service = LLMService()
 
 
 @app.get("/health")
@@ -50,3 +52,17 @@ async def stream_pipeline(request: MatchRequest):
         yield {"event": "done", "data": "{}"}
 
     return EventSourceResponse(event_generator())
+
+
+@app.post("/coach/chat", response_model=CoachChatResponse)
+async def coach_chat(request: CoachChatRequest):
+    reply = await llm_service.coach_chat(
+        dossier_a=request.user_a_dossier,
+        dossier_b=request.user_b_dossier,
+        crossref=request.crossref,
+        message=request.message,
+        history=[msg.model_dump() for msg in request.history],
+        user_a_name=request.user_a_name,
+        user_b_name=request.user_b_name,
+    )
+    return CoachChatResponse(reply=reply)

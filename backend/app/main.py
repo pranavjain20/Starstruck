@@ -29,8 +29,14 @@ async def health():
 @app.post("/run", response_model=CoachingResponse)
 async def run_pipeline(request: MatchRequest):
     initial_state = {
-        "user_a": {"username": request.user_a.spotify_username or ""},
-        "user_b": {"username": request.user_b.spotify_username or ""},
+        "user_a": {
+            "username": request.user_a.spotify_username or "",
+            "location": request.user_a.location
+        },
+        "user_b": {
+            "username": request.user_b.spotify_username or "",
+            "location": request.user_b.location
+        },
         "include_venue": request.include_venue,
     }
     _result = await pipeline.ainvoke(initial_state)
@@ -41,8 +47,14 @@ async def run_pipeline(request: MatchRequest):
 async def stream_pipeline(request: MatchRequest):
     async def event_generator():
         initial_state = {
-            "user_a": {"username": request.user_a.spotify_username or ""},
-            "user_b": {"username": request.user_b.spotify_username or ""},
+            "user_a": {
+                "username": request.user_a.spotify_username or "",
+                "location": request.user_a.location
+            },
+            "user_b": {
+                "username": request.user_b.spotify_username or "",
+                "location": request.user_b.location
+            },
             "include_venue": request.include_venue,
         }
         async for event in pipeline.astream(initial_state):

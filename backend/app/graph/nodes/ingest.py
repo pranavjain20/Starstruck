@@ -54,7 +54,7 @@ async def _fetch_user_data(identifiers: dict[str, str | None]) -> UserDataBundle
     results = await asyncio.gather(*tasks)
     bundle: dict[str, Any] = {}
     for service, data in results:
-        if data:
+        if data is not None:
             bundle[service] = data
     return bundle
 

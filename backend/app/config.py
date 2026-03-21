@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     google_maps_api_key: str = ""
     redis_url: str = "redis://localhost:6379"
     database_url: str = ""
-    cors_origins: list[str] = ["http://localhost:5173"]
+    cors_origins: list[str] = ["http://localhost:5173", "https://starstruck-eta.vercel.app"]
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

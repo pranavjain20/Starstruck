@@ -33,3 +33,8 @@ env/
 
 # User Secrets
 backend/.env
+
+# Debug/trace artifacts
+*_trace*.txt
+trace_*.py
+stress_test.py

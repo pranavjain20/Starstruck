@@ -634,7 +634,7 @@ function MatchesView({ initialPlanIdx, onClearInitial }: { initialPlanIdx?: numb
         };
       }
     } catch (err) {
-      console.error("Plumbing error:", err);
+      console.error("Pipeline request failed:", err);
     } finally {
       clearInterval(stepInterval);
       clearInterval(progressInterval);

@@ -79,9 +79,9 @@ async def connect_service(request: ConnectRequest):
         data = await connector.fetch(request.username)
         preview = generate_preview(request.service, data)
         return ConnectResponse(success=True, preview=preview)
-    except Exception:
-        logger.exception("Connector %s failed", request.service)
-        return ConnectResponse(success=True, preview="Connected (limited data)")
+    except Exception as exc:
+        logger.exception("Connector %s failed: %s", request.service, exc)
+        return ConnectResponse(success=False, preview=f"Connection failed: {type(exc).__name__}")
 
 
 @app.post("/api/analyze", response_model=AnalysisResult)

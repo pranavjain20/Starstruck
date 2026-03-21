@@ -1,11 +1,13 @@
 # Starstruck
 
-AI-powered dating app that builds personality profiles from your real online presence. Connect your accounts, and our pipeline scrapes, analyzes, and matches you based on who you actually are — not a curated bio.
+AI-powered dating app that builds personality profiles from your real online presence. Connect your accounts, and the pipeline scrapes, analyzes, and matches you based on who you actually are — not a curated bio.
+
+**[Live Demo](https://starstruck-eta.vercel.app)** · **[API](https://starstruck.onrender.com/health)**
 
 ## How It Works
 
 1. **Upload a photo** — selfie for your profile card
-2. **Connect accounts** — GitHub, Letterboxd, Instagram, LinkedIn, Spotify
+2. **Connect accounts** — GitHub, Letterboxd, Instagram, LinkedIn
 3. **Get your profile** — AI-generated bio, vibe tags, and personality breakdown
 4. **Swipe** — see compatibility scores and AI-suggested icebreakers
 
@@ -41,7 +43,7 @@ The pipeline runs as a **LangGraph DAG** — each node is an async function read
 - **Backend**: Python 3.12, FastAPI, LangGraph, LangChain
 - **Connectors**: `httpx` (GitHub, Letterboxd), Playwright (Instagram, LinkedIn)
 - **LLM**: Configurable via LangChain (default: Gemini 2.0 Flash)
-- **Deployment**: Railway (Docker)
+- **Deployment**: Vercel (frontend), Render (backend, Docker)
 
 ## Project Structure
 
@@ -99,9 +101,7 @@ pip install -r requirements.txt
 playwright install chromium
 
 # Set environment variables
-export GOOGLE_API_KEY=your_key
-export SPOTIFY_CLIENT_ID=your_id        # optional
-export SPOTIFY_CLIENT_SECRET=your_secret # optional
+export GEMINI_API_KEY=your_key
 
 uvicorn app.main:app --reload
 ```
@@ -114,7 +114,7 @@ npm install
 npm run dev
 ```
 
-Set `VITE_API_BASE_URL` to point at your backend (defaults to Railway deployment).
+Set `VITE_API_BASE_URL` to point at your backend (defaults to production deployment).
 
 ### Tests
 
@@ -123,6 +123,6 @@ cd backend
 pytest tests/ -v
 ```
 
-## Team
+## Author
 
-Built at a hackathon by Aditya & Pranav.
+Built by Pranav Jain.

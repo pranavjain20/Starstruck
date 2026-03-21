@@ -76,6 +76,18 @@ class InstagramConnector(BaseConnector):
                     except Exception:
                         pass
 
+                    # Profile image from og:image meta tag
+                    try:
+                        og_img = await page.query_selector(
+                            'meta[property="og:image"]'
+                        )
+                        if og_img:
+                            result["og_image"] = (
+                                await og_img.get_attribute("content") or ""
+                            )
+                    except Exception:
+                        pass
+
                     # Screenshot of the viewport
                     try:
                         result["screenshot_bytes"] = await page.screenshot(
@@ -121,8 +133,11 @@ class InstagramConnector(BaseConnector):
         if screenshot_bytes and not hit_login_wall:
             screenshot_b64 = base64.b64encode(screenshot_bytes).decode("utf-8")
 
+        og_image = raw.get("og_image", "")
+
         return {
             "bio": bio,
+            "avatar_url": og_image if og_image and not hit_login_wall else "",
             "screenshot_b64": screenshot_b64,
             "login_wall": hit_login_wall,
         }

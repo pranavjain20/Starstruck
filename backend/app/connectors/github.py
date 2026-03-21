@@ -20,14 +20,18 @@ class GitHubConnector(BaseConnector):
             headers={"Accept": "application/vnd.github+json"},
             timeout=15,
         ) as client:
+            profile_task = self._fetch_profile(client, username)
             repos_task = self._fetch_repos(client, username)
             events_task = self._fetch_events(client, username)
             starred_task = self._fetch_starred(client, username)
-            repos, events, starred = await asyncio.gather(
-                repos_task, events_task, starred_task
+            profile, repos, events, starred = await asyncio.gather(
+                profile_task, repos_task, events_task, starred_task
             )
 
         return {
+            "avatar_url": profile.get("avatar_url", ""),
+            "display_name": profile.get("name") or username,
+            "bio": profile.get("bio") or "",
             "languages": self._extract_languages(repos),
             "repos": self._extract_repos(repos),
             "commit_hours": self._extract_commit_hours(events),
@@ -35,6 +39,15 @@ class GitHubConnector(BaseConnector):
         }
 
     # ── individual API calls ──────────────────────────────────────
+
+    async def _fetch_profile(
+        self, client: httpx.AsyncClient, username: str
+    ) -> dict:
+        resp = await client.get(f"/users/{username}")
+        if resp.status_code == 404:
+            return {}
+        resp.raise_for_status()
+        return resp.json()
 
     async def _fetch_repos(
         self, client: httpx.AsyncClient, username: str

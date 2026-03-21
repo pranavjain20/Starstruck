@@ -78,7 +78,14 @@ async def connect_service(request: ConnectRequest):
         connector = connector_cls()
         data = await connector.fetch(request.username)
         preview = generate_preview(request.service, data)
-        return ConnectResponse(success=True, preview=preview)
+        avatar_url = data.get("avatar_url") or None
+        display_name = data.get("display_name") or data.get("name") or None
+        return ConnectResponse(
+            success=True,
+            preview=preview,
+            avatar_url=avatar_url,
+            display_name=display_name,
+        )
     except Exception as exc:
         logger.exception("Connector %s failed: %s", request.service, exc)
         return ConnectResponse(success=False, preview=f"Connection failed: {type(exc).__name__}")

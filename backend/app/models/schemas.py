@@ -63,6 +63,8 @@ class ConnectRequest(BaseModel):
 class ConnectResponse(BaseModel):
     success: bool
     preview: str
+    avatar_url: str | None = None
+    display_name: str | None = None
 
 
 class AnalyzeRequest(BaseModel):

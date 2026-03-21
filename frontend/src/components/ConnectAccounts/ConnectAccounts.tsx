@@ -101,6 +101,14 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
     linkedin: "",
   });
 
+  const [avatars, setAvatars] = useState<Record<ServiceId, string | null>>({
+    spotify: null,
+    letterboxd: null,
+    github: null,
+    instagram: null,
+    linkedin: null,
+  });
+
   const [usernames, setUsernames] = useState<Record<ServiceId, string | null>>({
     spotify: null,
     letterboxd: null,
@@ -124,6 +132,7 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
     try {
       const result = await connectService(id, username);
       setPreviews((prev) => ({ ...prev, [id]: result.preview }));
+      setAvatars((prev) => ({ ...prev, [id]: result.avatar_url || null }));
       setConnected((prev) => ({ ...prev, [id]: true }));
     } catch {
       setPreviews((prev) => ({ ...prev, [id]: "Profile synced" }));
@@ -188,6 +197,7 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
                 onConnect={() => handleConnect(service)}
                 onDisconnect={() => handleDisconnect(service.id)}
                 dataPreview={previews[service.id] || service.mockPreview}
+                avatarUrl={avatars[service.id] || undefined}
                 index={i}
               />
             ))}

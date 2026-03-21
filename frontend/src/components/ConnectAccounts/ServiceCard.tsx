@@ -13,6 +13,7 @@ interface ServiceCardProps {
   onConnect: () => void;
   onDisconnect: () => void;
   dataPreview?: string;
+  avatarUrl?: string;
   index: number;
 }
 
@@ -27,6 +28,7 @@ export function ServiceCard({
   onConnect,
   onDisconnect,
   dataPreview,
+  avatarUrl,
   index,
 }: ServiceCardProps) {
   const card: CSSProperties = {
@@ -92,9 +94,23 @@ export function ServiceCard({
       {/* Accent bar for connected state */}
       {isConnected && <div style={accentBar} />}
 
-      {/* Service icon */}
+      {/* Service icon or avatar */}
       <div style={{ flexShrink: 0, display: "flex" }}>
-        {icon}
+        {isConnected && avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt={name}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: `2px solid ${brandColor}60`,
+            }}
+          />
+        ) : (
+          icon
+        )}
       </div>
 
       {/* Text content */}

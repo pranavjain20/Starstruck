@@ -1,6 +1,13 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://starstruck-backend-production.up.railway.app";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://starstruck.onrender.com";
 
-export async function connectService(service: string, username: string): Promise<{ success: boolean; preview: string }> {
+export interface ConnectResult {
+  success: boolean;
+  preview: string;
+  avatar_url?: string | null;
+  display_name?: string | null;
+}
+
+export async function connectService(service: string, username: string): Promise<ConnectResult> {
   const res = await fetch(`${API_BASE}/api/connect`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

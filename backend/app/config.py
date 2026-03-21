@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     spotify_client_id: str = ""
     spotify_client_secret: str = ""
     google_maps_api_key: str = ""
+    github_token: str = ""
     redis_url: str = "redis://localhost:6379"
     database_url: str = ""
     cors_origins: list[str] = ["http://localhost:5173", "https://starstruck-eta.vercel.app"]

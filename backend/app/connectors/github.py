@@ -6,6 +6,7 @@ from typing import Any
 import httpx
 
 from app.connectors.base import BaseConnector
+from app.config import settings
 
 API_BASE = "https://api.github.com"
 
@@ -15,9 +16,12 @@ class GitHubConnector(BaseConnector):
 
     async def fetch(self, identifier: str) -> dict[str, Any]:
         username = identifier.strip().lstrip("@")
+        headers: dict[str, str] = {"Accept": "application/vnd.github+json"}
+        if settings.github_token:
+            headers["Authorization"] = f"Bearer {settings.github_token}"
         async with httpx.AsyncClient(
             base_url=API_BASE,
-            headers={"Accept": "application/vnd.github+json"},
+            headers=headers,
             timeout=15,
         ) as client:
             profile_task = self._fetch_profile(client, username)

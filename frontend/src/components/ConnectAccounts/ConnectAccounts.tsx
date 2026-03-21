@@ -4,12 +4,12 @@ import { styles, COLORS } from "./styles";
 import { ServiceCard } from "./ServiceCard";
 import { SignalStrength } from "./SignalStrength";
 import { BottomSheet } from "./BottomSheet";
-import { ChevronLeftIcon, MusicIcon, FilmIcon, CodeIcon, CameraIcon, LinkedInIcon } from "./icons";
+import { ChevronLeftIcon, FilmIcon, CodeIcon, CameraIcon, LinkedInIcon } from "./icons";
 import { connectService } from "../../services/api";
 
 // ── Service definitions ──
 
-type ServiceId = "spotify" | "letterboxd" | "github" | "instagram" | "linkedin";
+type ServiceId = "letterboxd" | "github" | "instagram" | "linkedin";
 
 interface ServiceDef {
   id: ServiceId;
@@ -24,17 +24,6 @@ interface ServiceDef {
 }
 
 const SERVICES: ServiceDef[] = [
-  {
-    id: "spotify",
-    name: "Spotify",
-    description: "Music taste & listening habits",
-    icon: <MusicIcon size={24} color="#BB97FF" />,
-    brandColor: "#1DB954",
-    accentColor: COLORS.limeCreem,
-    required: false,
-    signalWeight: 40,
-    mockPreview: "Top artist: Khruangbin \u00b7 847 genres",
-  },
   {
     id: "letterboxd",
     name: "Letterboxd",

@@ -11,7 +11,7 @@ export default function App() {
   const [identifiers, setIdentifiers] = useState<Record<string, string | null>>({});
 
   if (step === 1) return <PhotoUpload onContinue={(photos, name) => { setUserPhoto(photos[0] ?? null); setUserName(name); setStep(2); }} />;
-  if (step === 2) return <ConnectAccounts onContinue={(ids) => { setIdentifiers(ids); setStep(3); }} />;
+  if (step === 2) return <ConnectAccounts onContinue={(ids, name, photo) => { setIdentifiers(ids); if (name) setUserName(name); if (photo) setUserPhoto(photo); setStep(3); }} />;
   if (step === 3) return <ProfileAnalysis onContinue={() => setStep(4)} identifiers={identifiers} />;
   return <SwipeScreen userPhoto={userPhoto} userName={userName} />;
 }

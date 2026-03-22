@@ -62,7 +62,7 @@ const SERVICES: ServiceDef[] = [
 // ── Main screen ──
 
 interface ConnectAccountsProps {
-  onContinue?: (identifiers: Record<string, string | null>) => void;
+  onContinue?: (identifiers: Record<string, string | null>, profileName?: string, profilePhoto?: string) => void;
 }
 
 export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
@@ -96,6 +96,8 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
     letterboxd: null,
   });
 
+  const [profileName, setProfileName] = useState<string | undefined>();
+  const [profilePhoto, setProfilePhoto] = useState<string | undefined>();
   const [sheetService, setSheetService] = useState<ServiceDef | null>(null);
 
   const signalPercentage = SERVICES.reduce(
@@ -112,6 +114,8 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
       const result = await connectService(id, username);
       setPreviews((prev) => ({ ...prev, [id]: result.preview }));
       setAvatars((prev) => ({ ...prev, [id]: result.avatar_url || null }));
+      if (result.display_name && !profileName) setProfileName(result.display_name);
+      if (result.avatar_url && !profilePhoto) setProfilePhoto(result.avatar_url);
       setConnected((prev) => ({ ...prev, [id]: true }));
     } catch {
       setPreviews((prev) => ({ ...prev, [id]: "Profile synced" }));
@@ -190,7 +194,7 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
         {/* ── Sticky CTA ── */}
         <div style={styles.stickyBottom}>
           <button
-            onClick={canContinue ? () => onContinue?.(usernames) : undefined}
+            onClick={canContinue ? () => onContinue?.(usernames, profileName, profilePhoto) : undefined}
             style={{
               ...styles.ctaButton,
               background: canContinue ? COLORS.softPeriwinkle : `${COLORS.softPeriwinkle}4D`,

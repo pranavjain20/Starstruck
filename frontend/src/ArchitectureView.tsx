@@ -330,7 +330,7 @@ export default function ArchitectureView() {
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 6, animation: "fadeSlideUp 0.6s ease both" }}>
             <h1 style={{ fontSize: 38, fontWeight: 900, fontFamily: FONTS.display, color: PALETTE.bright, letterSpacing: "-0.5px", lineHeight: 1 }}>
-              Starstruck
+              StarStruck
             </h1>
             <span style={{ fontSize: 11, fontFamily: FONTS.mono, color: PALETTE.dim, letterSpacing: 2, textTransform: "uppercase" }}>
               tech architecture

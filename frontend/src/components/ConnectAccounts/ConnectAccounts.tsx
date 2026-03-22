@@ -152,7 +152,7 @@ export function ConnectAccounts({ onContinue }: ConnectAccountsProps) {
               </button>
               <img
                 src="/Star (7).png"
-                alt="Starstruck"
+                alt="StarStruck"
                 style={{ width: 80, height: 80, margin: "0 auto" }}
               />
               <div style={{ width: 24 }} />

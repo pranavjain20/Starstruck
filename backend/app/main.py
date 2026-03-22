@@ -38,7 +38,7 @@ from app.services.preview import generate_preview
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Starstruck", version="0.1.0")
+app = FastAPI(title="StarStruck", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,

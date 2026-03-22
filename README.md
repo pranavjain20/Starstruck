@@ -1,4 +1,4 @@
-# Starstruck
+# StarStruck
 
 AI-powered dating app that builds personality profiles from your real online presence. Instead of writing a bio, connect your GitHub, Instagram, or Letterboxd — the app scrapes your data, runs it through an LLM pipeline, and generates a personality profile based on who you actually are.
 

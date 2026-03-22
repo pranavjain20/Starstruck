@@ -473,7 +473,7 @@ const MATCHES: MatchProfile[] = [
         { title: "Stack Preferences", description: "You gravitate toward Python and PHP while Priya prefers TypeScript and Next.js — healthy debate territory." },
       ],
       citations: [
-        "You: 'AI enthusiast building Starstruck', Priya: 'full-stack developer and film critic'",
+        "You: 'AI enthusiast building StarStruck', Priya: 'full-stack developer and film critic'",
         "Both active on GitHub with ML-related repositories",
         "Priya rated 'Interstellar' and 'Whiplash' 5 stars — potential movie night material",
       ],
@@ -1554,7 +1554,7 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
         }}>
           <img
             src="/Star (7).png"
-            alt="Starstruck"
+            alt="StarStruck"
             style={{ width: 80, height: 80 }}
           />
         </div>
@@ -1744,7 +1744,7 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
           }}>
             <img
               src="/Star (7).png"
-              alt="Starstruck"
+              alt="StarStruck"
               className="match-logo-pulse"
               style={{ width: 80, height: 80, marginBottom: 24 }}
             />

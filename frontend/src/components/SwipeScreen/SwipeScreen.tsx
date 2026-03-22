@@ -75,7 +75,7 @@ function MatchProfileDetail({ match, onPlanDate, onBack }: { match: MatchProfile
         onClick={onBack}
         style={{ background: "none", border: "none", cursor: "pointer", padding: "0 0 16px", color: SURFACE.textSecondary, fontSize: 13, fontWeight: 600, fontFamily: FONT_FAMILY }}
       >
-        \u2190 Back
+        ← Back
       </button>
 
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
@@ -93,7 +93,7 @@ function MatchProfileDetail({ match, onPlanDate, onBack }: { match: MatchProfile
         padding: 20,
       }}>
         <div style={{ fontSize: 15, color: SURFACE.textPrimary, fontStyle: "italic", lineHeight: 1.5, marginBottom: 16 }}>
-          \"{pub.vibe}\"
+          &ldquo;{pub.vibe}&rdquo;
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
           {pub.tags.map((t) => pill(t, COLORS.softPeriwinkle))}
@@ -463,21 +463,19 @@ const MATCHES: MatchProfile[] = [
         { title: "Python Proficiency", description: "Both individuals list Python among their preferred languages." },
       ],
       complementary: [
-        { title: "Front-end vs. Full-stack", description: "Person A leans towards front-end design, while Person B is a full-stack developer. This provides a good balance of skills for project collaboration." },
-        { title: "Security Focus", description: "Person A has a strong interest in cybersecurity, which could complement Person B's broader development skills by adding a security-conscious perspective." },
-        { title: "Film Connoisseur", description: "Person B is a film enthusiast, possibly introducing a new interest or perspective to Person A." },
-        { title: "Tech-for-Good Advocate", description: "Person B is focused on applying tech to solve real-world problems. This aligns with Person A's interest in fitness applications and could be a point of collaboration." },
+        { title: "Front-end vs. Full-stack", description: "Priya leans towards front-end design while you're a full-stack developer — a natural balance for creative collaboration." },
+        { title: "Security Meets Scale", description: "Your cybersecurity background complements Priya's product-focused development style." },
+        { title: "Film Connoisseur", description: "Priya's film obsession could open up a whole new world of watch parties and film festival dates." },
+        { title: "Tech for Good", description: "Priya applies tech to real-world problems — aligned with your work on AI-powered health tools." },
       ],
       tensionPoints: [
-        { title: "Schedule Differences", description: "Person A is a self-described 'night owl,' while Person B has a 'mixed' schedule." },
-        { title: "Technology Stack Preferences", description: "Person A favors PHP and Javascript, while Person B prefers TypeScript, Rust, and Next.js." },
-        { title: "Project Scope", description: "Person A appears to focus on individual projects and job seeking, while Person B is involved in broader, community-focused projects." },
+        { title: "Schedule Differences", description: "You're a night owl while Priya keeps a more mixed schedule — late-night coding sessions might not always align." },
+        { title: "Stack Preferences", description: "You gravitate toward Python and PHP while Priya prefers TypeScript and Next.js — healthy debate territory." },
       ],
       citations: [
-        "Person A: 'front-end enthusiast', Person B: 'full-stack enthusiast'",
-        "Person A: schedule_pattern: 'night_owl', Person B: schedule_pattern: 'mixed'",
-        "Person A's interests include 'SkinCancerCNN', Person B's interests include 'Machine Learning'",
-        "Person B: 'Built a Valentine's Day themed project at a hackathon.'",
+        "You: 'AI enthusiast building Starstruck', Priya: 'full-stack developer and film critic'",
+        "Both active on GitHub with ML-related repositories",
+        "Priya rated 'Interstellar' and 'Whiplash' 5 stars — potential movie night material",
       ],
     },
   },
@@ -1085,7 +1083,7 @@ function DateDetailView({ dateEntry, userName, onBack }: { dateEntry: DateEntry;
             onClick={() => setShowChat(false)}
             style={{ background: "none", border: "none", cursor: "pointer", padding: 0, color: SURFACE.textSecondary, fontSize: 13, fontWeight: 600, fontFamily: FONT_FAMILY }}
           >
-            \u2190
+            ←
           </button>
           <div style={{
             width: 36,
@@ -1269,7 +1267,7 @@ function DateDetailView({ dateEntry, userName, onBack }: { dateEntry: DateEntry;
           onClick={onBack}
           style={{ background: "none", border: "none", cursor: "pointer", padding: "0 0 16px", color: SURFACE.textSecondary, fontSize: 13, fontWeight: 600, fontFamily: FONT_FAMILY }}
         >
-          \u2190 Back
+          ← Back
         </button>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 4 }}>

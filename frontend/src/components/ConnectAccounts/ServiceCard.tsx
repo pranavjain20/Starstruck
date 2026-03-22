@@ -138,7 +138,7 @@ export function ServiceCard({
         {isConnected && dataPreview && (
           <div style={{
             fontSize: 12,
-            color: `${brandColor}B3`,
+            color: "#4ADE80",
             marginTop: 6,
           }}>
             {dataPreview}
@@ -151,19 +151,18 @@ export function ServiceCard({
         <div style={{
           fontSize: 11,
           color: SURFACE.textSecondary,
-          fontFamily: FONT_MONO,
-          textAlign: "right",
-          maxWidth: 80,
+          whiteSpace: "nowrap",
+          flexShrink: 0,
         }}>
           {loadingText || "connecting..."}
         </div>
       ) : isConnected ? (
         <div className="check-enter" style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-          <CheckCircleIcon size={18} color={brandColor} />
+          <CheckCircleIcon size={18} color="#4ADE80" />
           <span style={{
             fontSize: 12,
             fontWeight: 600,
-            color: brandColor,
+            color: "#4ADE80",
           }}>
             Connected
           </span>

@@ -8,14 +8,6 @@ interface LandingProps {
   onTryDemo: () => void;
 }
 
-const FLOATING_PHOTOS = [
-  { src: "/profile_photos/3.png", size: 64, top: "12%", left: "8%", delay: 0 },
-  { src: "/profile_photos/7.png", size: 52, top: "8%", right: "12%", delay: 0.8 },
-  { src: "/profile_photos/5.png", size: 48, top: "28%", left: "4%", delay: 1.6 },
-  { src: "/profile_photos/9.png", size: 56, top: "24%", right: "6%", delay: 0.4 },
-  { src: "/profile_photos/2.png", size: 44, bottom: "28%", left: "10%", delay: 1.2 },
-  { src: "/profile_photos/11.png", size: 50, bottom: "24%", right: "8%", delay: 2.0 },
-];
 
 export function Landing({ onCreateProfile, onTryDemo }: LandingProps) {
   const [mounted, setMounted] = useState(false);
@@ -49,36 +41,6 @@ export function Landing({ onCreateProfile, onTryDemo }: LandingProps) {
         animation: "pulseGlow 4s ease-in-out infinite",
         pointerEvents: "none",
       }} />
-
-      {/* Floating profile photo orbs */}
-      {FLOATING_PHOTOS.map((photo, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            top: photo.top,
-            left: photo.left,
-            right: photo.right,
-            bottom: photo.bottom,
-            width: photo.size,
-            height: photo.size,
-            borderRadius: "50%",
-            overflow: "hidden",
-            border: "2px solid rgba(187,151,255,0.2)",
-            opacity: mounted ? 0.5 : 0,
-            transform: mounted ? "scale(1)" : "scale(0.5)",
-            transition: `all 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${photo.delay}s`,
-            animation: mounted ? `float${i % 3} ${6 + i * 0.8}s ease-in-out infinite ${photo.delay}s` : "none",
-            pointerEvents: "none",
-          }}
-        >
-          <img
-            src={photo.src}
-            alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </div>
-      ))}
 
       {/* Main content */}
       <div style={{
@@ -253,21 +215,6 @@ export function Landing({ onCreateProfile, onTryDemo }: LandingProps) {
         @keyframes pulseGlow {
           0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
           50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-        }
-        @keyframes float0 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-12px) rotate(2deg); }
-          66% { transform: translateY(6px) rotate(-1deg); }
-        }
-        @keyframes float1 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          40% { transform: translateY(10px) rotate(-2deg); }
-          70% { transform: translateY(-8px) rotate(1deg); }
-        }
-        @keyframes float2 {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          25% { transform: translateY(-10px) rotate(1deg); }
-          75% { transform: translateY(8px) rotate(-2deg); }
         }
       `}</style>
     </div>

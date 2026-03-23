@@ -55,7 +55,7 @@ export function ServiceCard({
     top: 0,
     bottom: 0,
     width: 3,
-    background: brandColor,
+    background: isConnected ? "#4ADE80" : brandColor,
     borderRadius: "20px 0 0 20px",
   };
 

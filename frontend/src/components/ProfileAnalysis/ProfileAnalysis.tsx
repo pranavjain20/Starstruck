@@ -21,7 +21,7 @@ const ANALYSIS_STEPS = [
 const SUGGESTED_BIO =
   "Front-end enthusiast who codes at night and listens to Drake on repeat. Building fitness apps, prepping for interviews, and occasionally dabbling in machine learning.";
 
-const FINDINGS = [
+const FINDINGS: { label: string; value: string; detail: string; color: string }[] = [
   {
     label: "Music Personality",
     value: "Hip Hop & R&B Loyalist",

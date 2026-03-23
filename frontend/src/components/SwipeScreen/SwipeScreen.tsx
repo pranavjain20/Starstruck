@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, type CSSProperties } from "react";
+import { useState, useCallback, type CSSProperties } from "react";
 import "../ConnectAccounts/connectAccounts.css";
 import { COLORS, SURFACE, FONT_FAMILY, FONT_MONO } from "../ConnectAccounts/styles";
 import { SwipeCard, HeartIcon, XMarkIcon, StarIcon } from "./SwipeCard";
@@ -205,24 +205,6 @@ function MatchProfileDetail({ match, onPlanDate, onBack }: { match: MatchProfile
         ))}
       </div>
 
-      {sectionLabel("Citations")}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {xref.citations.map((cite) => (
-          <div key={cite} style={{
-            fontSize: 12,
-            fontFamily: FONT_MONO,
-            color: SURFACE.textTertiary,
-            background: `${COLORS.softPeriwinkle}0D`,
-            padding: "10px 14px",
-            borderRadius: 12,
-            borderLeft: `3px solid ${COLORS.softPeriwinkle}40`,
-            lineHeight: 1.4,
-          }}>
-            {cite}
-          </div>
-        ))}
-      </div>
-
       <button
         onClick={onPlanDate}
         style={{
@@ -243,6 +225,24 @@ function MatchProfileDetail({ match, onPlanDate, onBack }: { match: MatchProfile
       >
         Plan a Date
       </button>
+
+      {sectionLabel("Citations")}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {xref.citations.map((cite) => (
+          <div key={cite} style={{
+            fontSize: 12,
+            fontFamily: FONT_MONO,
+            color: SURFACE.textTertiary,
+            background: `${COLORS.softPeriwinkle}0D`,
+            padding: "10px 14px",
+            borderRadius: 12,
+            borderLeft: `3px solid ${COLORS.softPeriwinkle}40`,
+            lineHeight: 1.4,
+          }}>
+            {cite}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -454,7 +454,7 @@ const MATCHES: MatchProfile[] = [
     sharedTags: ["Design", "Brunch", "Dogs"],
     suggestion: { place: "MoMA", address: "11 W 53rd St, Midtown", date: "Sat, Feb 21 · 2:00 PM", reason: "She's into design, you're into art — MoMA on a Saturday afternoon is a no-brainer." },
     publicProfile: { vibe: "A modern soul with a passion for building and a taste for the finer things.", tags: ["web dev", "hip hop", "film enthusiast", "coding interviews", "music lover", "fitness", "machine learning"], schedule: "mixed" },
-    privateProfile: { summary: "This person is a developer with a strong interest in web technologies and machine learning. They enjoy critically acclaimed films and have a penchant for modern hip hop and R&B. They seem driven and ambitious, possibly preparing for job interviews in the tech industry.", traits: ["aspiring developer", "modern music aficionado", "film critic", "interview prep", "fitness enthusiast"], interests: ["HTML", "PHP", "JavaScript", "CSS", "Drake", "The Weeknd", "Travis Scott", "Kendrick Lamar", "Frank Ocean", "Interstellar", "The Social Network", "Oppenheimer", "Whiplash", "Parasite"], deepCuts: ["Starred repositories related to interview preparation", "Experimenting with SkinCancerCNN", "Listens to Frank Ocean", "Rated 'Interstellar' and 'Whiplash' a perfect 5 stars"], dataSources: ["github", "spotify", "letterboxd"] },
+    privateProfile: { summary: "A design-focused full-stack developer who lives on Letterboxd. Rates every film she watches, gravitates toward visually stunning cinema, and builds side projects with meticulous UI. Keeps a curated plant collection on her desk.", traits: ["design thinker", "film obsessive", "full-stack developer", "community organizer", "plant mom"], interests: ["Next.js", "TypeScript", "Figma", "Interstellar", "Whiplash", "Parasite", "Wes Anderson", "Studio Ghibli"], deepCuts: ["Rated every Wes Anderson film on Letterboxd", "Has a Figma file with 200+ UI inspiration screenshots", "Hosts a monthly movie night for her friend group", "Named her monstera 'Monty'"], dataSources: ["github", "spotify", "letterboxd"] },
     crossref: {
       shared: [
         { title: "Machine Learning Interest", description: "You and Priya both geek out over ML — she's applied it to real products while you've been exploring it through personal projects." },
@@ -572,7 +572,7 @@ const ANALYSIS_MSGS = [
 
 type MatchPhase = "grid" | "confirm" | "analyzing" | "suggestion" | "sent";
 
-function MatchesView({ initialPlanIdx, onClearInitial }: { initialPlanIdx?: number | null; onClearInitial?: () => void }) {
+function MatchesView({ initialPlanIdx, onClearInitial, userName }: { initialPlanIdx?: number | null; onClearInitial?: () => void; userName?: string }) {
   const [phase, setPhase] = useState<MatchPhase>(initialPlanIdx != null ? "confirm" : "grid");
   const [selectedIdx, setSelectedIdx] = useState<number | null>(initialPlanIdx ?? null);
 
@@ -608,8 +608,8 @@ function MatchesView({ initialPlanIdx, onClearInitial }: { initialPlanIdx?: numb
     try {
       const request = {
         user_a: {
-          spotify_username: "aditya",
-          letterboxd_username: "aditya",
+          spotify_username: userName?.toLowerCase() || "user",
+          letterboxd_username: userName?.toLowerCase() || "user",
           location: "New York, NY"
         },
         user_b: {
@@ -640,29 +640,6 @@ function MatchesView({ initialPlanIdx, onClearInitial }: { initialPlanIdx?: numb
       setPhase("suggestion");
     }
   };
-
-  useEffect(() => {
-    if (phase !== "analyzing") return;
-
-    const stepDuration = 2500 / ANALYSIS_MSGS.length;
-    const stepInterval = setInterval(() => {
-      setAnalysisStep((prev) => {
-        if (prev >= ANALYSIS_MSGS.length - 1) { clearInterval(stepInterval); return prev; }
-        return prev + 1;
-      });
-    }, stepDuration);
-
-    const progressInterval = setInterval(() => {
-      setAnalysisProgress((prev) => {
-        if (prev >= 100) { clearInterval(progressInterval); return 100; }
-        return prev + 2;
-      });
-    }, 50);
-
-    const timeout = setTimeout(() => setPhase("suggestion"), 2800);
-
-    return () => { clearInterval(stepInterval); clearInterval(progressInterval); clearTimeout(timeout); };
-  }, [phase]);
 
   if (phase === "confirm" && selected) {
     return (
@@ -859,7 +836,7 @@ function MatchesView({ initialPlanIdx, onClearInitial }: { initialPlanIdx?: numb
         <div className="check-enter" style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
         <div style={{ fontSize: 22, fontWeight: 800, color: SURFACE.textPrimary, marginBottom: 8 }}>Invite Sent!</div>
         <div style={{ fontSize: 14, color: SURFACE.textSecondary, textAlign: "center", maxWidth: 260, marginBottom: 28 }}>
-          {selected.name} will get your date invite for {selected.suggestion.place}
+          {selected.name} will get your date invite for {selected.suggestion?.place || "your date spot"}
         </div>
         <button
           onClick={backToGrid}
@@ -933,10 +910,10 @@ interface DateEntry {
 }
 
 const DATES: DateEntry[] = [
-  { name: "Luna", photo: "/profile_photos/3.png", place: "Blue Note Jazz Club", date: "Fri, Feb 20 \u00b7 8:00 PM", status: "confirmed", matchRef: MATCHES[0] },
-  { name: "Priya", photo: "/profile_photos/4.png", place: "MoMA", date: "Sat, Feb 21 \u00b7 2:00 PM", status: "confirmed", matchRef: MATCHES[1] },
-  { name: "Chloe", photo: "/profile_photos/6.png", place: "Comedy Cellar", date: "Tue, Feb 25 \u00b7 9:30 PM", status: "pending", matchRef: MATCHES[2] },
-  { name: "Iris", photo: "/profile_photos/10.png", place: "Metrograph Cinema", date: "Sun, Mar 1 \u00b7 4:00 PM", status: "pending", matchRef: MATCHES[3] },
+  { name: "Luna", photo: "/profile_photos/3.png", place: "Blue Note Jazz Club", date: "Fri, Apr 4 \u00b7 8:00 PM", status: "confirmed", matchRef: MATCHES[0] },
+  { name: "Priya", photo: "/profile_photos/4.png", place: "MoMA", date: "Sat, Apr 5 \u00b7 2:00 PM", status: "confirmed", matchRef: MATCHES[1] },
+  { name: "Chloe", photo: "/profile_photos/6.png", place: "Comedy Cellar", date: "Tue, Apr 8 \u00b7 9:30 PM", status: "pending", matchRef: MATCHES[2] },
+  { name: "Iris", photo: "/profile_photos/10.png", place: "Metrograph Cinema", date: "Sun, Apr 13 \u00b7 4:00 PM", status: "pending", matchRef: MATCHES[3] },
 ];
 
 function CupidIcon({ size = 24, color = "currentColor" }: { size?: number; color?: string }) {
@@ -992,15 +969,15 @@ function DateDetailView({ dateEntry, userName, onBack }: { dateEntry: DateEntry;
           user_b_name: match.name,
           user_a_dossier: {
             public: {
-              vibe: "Tech-savvy night owl with eclectic taste",
-              tags: ["web dev", "hip hop", "film", "coding", "ML"],
+              vibe: "Curious and creative with eclectic taste",
+              tags: ["tech", "music", "film", "culture"],
               schedule_pattern: "night_owl",
             },
             private: {
-              summary: "A developer and music enthusiast who codes late into the night.",
-              traits: ["night owl", "builder", "music lover"],
-              interests: ["Drake", "TypeScript", "Interstellar"],
-              deep_cuts: ["Hackathon regular", "Drake stan"],
+              summary: "Someone exploring new connections and shared interests.",
+              traits: ["curious", "creative", "open-minded"],
+              interests: ["music", "film", "technology"],
+              deep_cuts: ["Always looking for the next great recommendation"],
             },
           },
           user_b_dossier: {
@@ -1448,7 +1425,7 @@ function DatesView({ onSelectDate }: { onSelectDate: (d: DateEntry) => void }) {
   );
 }
 
-function ProfileView() {
+function ProfileView({ userName }: { userName?: string }) {
   return (
     <div style={{ padding: "0 24px", flex: 1, overflowY: "auto" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 28 }}>
@@ -1467,7 +1444,7 @@ function ProfileView() {
           <PersonIcon size={40} color={COLORS.softPeriwinkle} />
         </div>
         <span style={{ fontSize: 22, fontWeight: 800, color: SURFACE.textPrimary }}>{userName || "Your Profile"}</span>
-        <span style={{ fontSize: 13, color: SURFACE.textSecondary, marginTop: 4 }}>NYC · 26</span>
+        <span style={{ fontSize: 13, color: SURFACE.textSecondary, marginTop: 4 }}>{userName || "You"}</span>
       </div>
 
       {[
@@ -1500,8 +1477,6 @@ function ProfileView() {
   );
 }
 
-const PRIYA_NAME = "Priya";
-
 export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null; userName?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<Tab>("swipe");
@@ -1533,9 +1508,6 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
     }
   }, [currentIndex]);
 
-  const handleSuperLike = useCallback(() => {
-    setCurrentIndex((prev) => prev + 1);
-  }, []);
 
   const remaining = MOCK_PROFILES.slice(currentIndex);
   const noMoreCards = remaining.length === 0;
@@ -1625,17 +1597,6 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
                 </button>
 
                 <button
-                  onClick={handleSuperLike}
-                  style={{
-                    ...actionBtn(COLORS.brightAmber),
-                    width: 48,
-                    height: 48,
-                  }}
-                >
-                  <StarIcon size={20} color={COLORS.brightAmber} />
-                </button>
-
-                <button
                   onClick={handleSwipeRight}
                   style={actionBtn(COLORS.limeCreem)}
                 >
@@ -1650,6 +1611,7 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
           <MatchesView
             initialPlanIdx={planDateIdx}
             onClearInitial={() => setPlanDateIdx(null)}
+            userName={userName}
           />
         )}
         {activeTab === "matches" && viewingProfile && (
@@ -1665,7 +1627,7 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
         )}
         {activeTab === "dates" && !selectedDate && <DatesView onSelectDate={(d) => setSelectedDate(d)} />}
         {activeTab === "dates" && selectedDate && <DateDetailView dateEntry={selectedDate} userName={userName || ""} onBack={() => setSelectedDate(null)} />}
-        {activeTab === "profile" && <ProfileView />}
+        {activeTab === "profile" && <ProfileView userName={userName} />}
 
         {/* ── Match count ── */}
         {!noMoreCards && activeTab === "swipe" && (

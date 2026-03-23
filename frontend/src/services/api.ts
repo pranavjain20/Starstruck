@@ -55,11 +55,18 @@ export interface CoachingResponse {
 }
 
 export async function runPipeline(request: MatchRequest): Promise<CoachingResponse> {
-  const res = await fetch(`${API_BASE}/run`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  });
-  if (!res.ok) throw new Error("Failed to run pipeline");
-  return res.json();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const res = await fetch(`${API_BASE}/run`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error("Failed to run pipeline");
+    return res.json();
+  } finally {
+    clearTimeout(timeout);
+  }
 }

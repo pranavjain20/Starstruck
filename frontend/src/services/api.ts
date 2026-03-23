@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://starstruck.onrender.com";
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://starstruck.onrender.com";
 
 export interface ConnectResult {
   success: boolean;

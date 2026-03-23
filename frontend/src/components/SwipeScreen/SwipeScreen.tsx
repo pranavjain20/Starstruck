@@ -2,7 +2,7 @@ import { useState, useCallback, type CSSProperties } from "react";
 import "../ConnectAccounts/connectAccounts.css";
 import { COLORS, SURFACE, FONT_FAMILY, FONT_MONO } from "../ConnectAccounts/styles";
 import { SwipeCard, HeartIcon, XMarkIcon, StarIcon } from "./SwipeCard";
-import { runPipeline } from "../../services/api";
+import { runPipeline, API_BASE } from "../../services/api";
 
 type Tab = "swipe" | "matches" | "dates" | "profile";
 
@@ -961,7 +961,7 @@ function DateDetailView({ dateEntry, userName, onBack }: { dateEntry: DateEntry;
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/coach/chat", {
+      const res = await fetch(`${API_BASE}/coach/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1425,7 +1425,7 @@ function DatesView({ onSelectDate }: { onSelectDate: (d: DateEntry) => void }) {
   );
 }
 
-function ProfileView({ userName }: { userName?: string }) {
+function ProfileView({ userName, userPhoto }: { userName?: string; userPhoto?: string | null }) {
   return (
     <div style={{ padding: "0 24px", flex: 1, overflowY: "auto" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 28 }}>
@@ -1441,17 +1441,21 @@ function ProfileView({ userName }: { userName?: string }) {
           marginBottom: 14,
           overflow: "hidden",
         }}>
-          <PersonIcon size={40} color={COLORS.softPeriwinkle} />
+          {userPhoto ? (
+            <img src={userPhoto} alt={userName || "Profile"} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          ) : (
+            <PersonIcon size={40} color={COLORS.softPeriwinkle} />
+          )}
         </div>
         <span style={{ fontSize: 22, fontWeight: 800, color: SURFACE.textPrimary }}>{userName || "Your Profile"}</span>
-        <span style={{ fontSize: 13, color: SURFACE.textSecondary, marginTop: 4 }}>{userName || "You"}</span>
+        <span style={{ fontSize: 13, color: SURFACE.textSecondary, marginTop: 4 }}>StarStruck Member</span>
       </div>
 
       {[
-        { label: "Edit Photos", value: "6 photos" },
-        { label: "Edit Bio", value: "Tap to update" },
-        { label: "Connected Accounts", value: "3 connected" },
-        { label: "Vibe Tags", value: "8 tags" },
+        { label: "Photos", value: "Manage" },
+        { label: "Bio", value: "Tap to update" },
+        { label: "Connected Accounts", value: "View" },
+        { label: "Vibe Tags", value: "Edit" },
       ].map((item, i) => (
         <div
           key={item.label}
@@ -1627,7 +1631,7 @@ export function SwipeScreen({ userPhoto, userName }: { userPhoto?: string | null
         )}
         {activeTab === "dates" && !selectedDate && <DatesView onSelectDate={(d) => setSelectedDate(d)} />}
         {activeTab === "dates" && selectedDate && <DateDetailView dateEntry={selectedDate} userName={userName || ""} onBack={() => setSelectedDate(null)} />}
-        {activeTab === "profile" && <ProfileView userName={userName} />}
+        {activeTab === "profile" && <ProfileView userName={userName} userPhoto={userPhoto} />}
 
         {/* ── Match count ── */}
         {!noMoreCards && activeTab === "swipe" && (

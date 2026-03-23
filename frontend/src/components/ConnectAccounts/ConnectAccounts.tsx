@@ -32,7 +32,7 @@ const SERVICES: ServiceDef[] = [
     brandColor: "#8B949E",
     accentColor: COLORS.softPeriwinkle,
     required: false,
-    signalWeight: 30,
+    signalWeight: 40,
     mockPreview: "23 repos \u00b7 mostly TypeScript",
   },
   {
@@ -43,7 +43,7 @@ const SERVICES: ServiceDef[] = [
     brandColor: "#E1306C",
     accentColor: COLORS.hotFuchsia,
     required: false,
-    signalWeight: 25,
+    signalWeight: 35,
     mockPreview: "@username \u00b7 aesthetic captured",
   },
   {
@@ -54,7 +54,7 @@ const SERVICES: ServiceDef[] = [
     brandColor: "#00E054",
     accentColor: "#00E054",
     required: false,
-    signalWeight: 20,
+    signalWeight: 25,
     mockPreview: "142 films \u00b7 avg rating 3.8\u2605",
   },
 ];

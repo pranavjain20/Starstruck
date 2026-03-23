@@ -70,6 +70,7 @@ export function ProfileAnalysis({ onContinue, identifiers, demoMode }: ProfileAn
   const [tags, setTags] = useState(VIBE_TAGS);
   const [findings, setFindings] = useState(FINDINGS);
   const [newTag, setNewTag] = useState("");
+  const [regenerateCount, setRegenerateCount] = useState(0);
   const fetchedRef = useRef(false);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ export function ProfileAnalysis({ onContinue, identifiers, demoMode }: ProfileAn
     }).catch(() => {
       setAnalyzing(false);
     });
-  }, [identifiers]);
+  }, [identifiers, regenerateCount]);
 
   useEffect(() => {
     if (!analyzing) return;
@@ -129,11 +130,19 @@ export function ProfileAnalysis({ onContinue, identifiers, demoMode }: ProfileAn
     };
   }, [analyzing]);
 
+  // In demo mode, end the analyzing state after the animation completes
+  useEffect(() => {
+    if (!demoMode || !analyzing) return;
+    const timer = setTimeout(() => setAnalyzing(false), 3000);
+    return () => clearTimeout(timer);
+  }, [demoMode, analyzing]);
+
   const handleRegenerate = () => {
     setAnalyzing(true);
     setProgress(0);
     setStepIndex(0);
     fetchedRef.current = false;
+    setRegenerateCount((c) => c + 1);
     setBio(SUGGESTED_BIO);
   };
 

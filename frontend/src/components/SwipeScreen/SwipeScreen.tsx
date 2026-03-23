@@ -445,7 +445,7 @@ const MATCHES: MatchProfile[] = [
       citations: [
         "Luna: 'vinyl-only listening rule on Sundays'",
         "Luna: Rated 'In the Mood for Love' 5 stars three times on Letterboxd",
-        "Both users have 'night_owl' schedule pattern",
+        "You and Luna both keep night owl schedules",
       ],
     },
   },
@@ -457,10 +457,10 @@ const MATCHES: MatchProfile[] = [
     privateProfile: { summary: "This person is a developer with a strong interest in web technologies and machine learning. They enjoy critically acclaimed films and have a penchant for modern hip hop and R&B. They seem driven and ambitious, possibly preparing for job interviews in the tech industry.", traits: ["aspiring developer", "modern music aficionado", "film critic", "interview prep", "fitness enthusiast"], interests: ["HTML", "PHP", "JavaScript", "CSS", "Drake", "The Weeknd", "Travis Scott", "Kendrick Lamar", "Frank Ocean", "Interstellar", "The Social Network", "Oppenheimer", "Whiplash", "Parasite"], deepCuts: ["Starred repositories related to interview preparation", "Experimenting with SkinCancerCNN", "Listens to Frank Ocean", "Rated 'Interstellar' and 'Whiplash' a perfect 5 stars"], dataSources: ["github", "spotify", "letterboxd"] },
     crossref: {
       shared: [
-        { title: "Machine Learning Interest", description: "Both individuals have a documented interest in machine learning, suggesting a potential area for collaboration or discussion." },
-        { title: "Web Development Focus", description: "Both individuals are involved in web development, indicating a shared understanding of web technologies and practices." },
-        { title: "Github Activity", description: "Both individuals have Github accounts, implying a shared interest in open-source development and version control." },
-        { title: "Python Proficiency", description: "Both individuals list Python among their preferred languages." },
+        { title: "Machine Learning Interest", description: "You and Priya both geek out over ML — she's applied it to real products while you've been exploring it through personal projects." },
+        { title: "Web Development Focus", description: "You're both deep in web dev — Priya leans front-end with Next.js while you cover the full stack." },
+        { title: "Github Activity", description: "You're both active on GitHub with public repos and open-source contributions." },
+        { title: "Python Proficiency", description: "Python is a shared language — you use it for backend work, Priya uses it for data and scripting." },
       ],
       complementary: [
         { title: "Front-end vs. Full-stack", description: "Priya leans towards front-end design while you're a full-stack developer — a natural balance for creative collaboration." },
@@ -474,7 +474,7 @@ const MATCHES: MatchProfile[] = [
       ],
       citations: [
         "You: 'AI enthusiast building StarStruck', Priya: 'full-stack developer and film critic'",
-        "Both active on GitHub with ML-related repositories",
+        "You and Priya both have ML-related repositories on GitHub",
         "Priya rated 'Interstellar' and 'Whiplash' 5 stars — potential movie night material",
       ],
     },
@@ -502,7 +502,7 @@ const MATCHES: MatchProfile[] = [
       citations: [
         "Chloe: 'I will absolutely roast you on the first date'",
         "Chloe: Performs stand-up every Tuesday at Comedy Cellar",
-        "Both users list 'karaoke' as a social activity",
+        "You and Chloe both list karaoke as a go-to social activity",
       ],
     },
   },
@@ -529,7 +529,7 @@ const MATCHES: MatchProfile[] = [
       citations: [
         "Iris: Made a 200-track playlist called 'for walking home alone'",
         "Iris: Has a tattoo of a Rothko painting",
-        "Both users frequent museum and gallery spaces regularly",
+        "You and Iris both frequent museums and galleries regularly",
       ],
     },
   },
@@ -556,7 +556,7 @@ const MATCHES: MatchProfile[] = [
       citations: [
         "Ella: Named her sourdough starter 'Leonard'",
         "Ella: schedule_pattern: 'early_bird'",
-        "Both users listen to Bon Iver and Phoebe Bridgers on Spotify",
+        "You and Ella both listen to Bon Iver and Phoebe Bridgers on Spotify",
       ],
     },
   },

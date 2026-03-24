@@ -119,8 +119,7 @@ export function ConnectAccounts({ onContinue, onBack }: ConnectAccountsProps) {
       if (result.avatar_url && !profilePhoto) setProfilePhoto(result.avatar_url);
       setConnected((prev) => ({ ...prev, [id]: true }));
     } catch {
-      setPreviews((prev) => ({ ...prev, [id]: "Profile synced" }));
-      setConnected((prev) => ({ ...prev, [id]: true }));
+      setPreviews((prev) => ({ ...prev, [id]: "Connection failed — tap to retry" }));
     } finally {
       setLoading((prev) => ({ ...prev, [id]: false }));
     }
@@ -212,7 +211,6 @@ export function ConnectAccounts({ onContinue, onBack }: ConnectAccountsProps) {
         {sheetService && (
           <BottomSheet
             serviceName={sheetService.name}
-            serviceId={sheetService.id}
             brandColor={sheetService.accentColor}
             onClose={() => setSheetService(null)}
             onSubmit={handleSheetSubmit}

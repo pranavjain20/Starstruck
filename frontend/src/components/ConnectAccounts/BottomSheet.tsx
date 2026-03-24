@@ -3,13 +3,12 @@ import { styles, COLORS, SURFACE } from "./styles";
 
 interface BottomSheetProps {
   serviceName: string;
-  serviceId?: string;
   brandColor: string;
   onClose: () => void;
   onSubmit: (value: string) => void;
 }
 
-export function BottomSheet({ serviceName, serviceId, brandColor, onClose, onSubmit }: BottomSheetProps) {
+export function BottomSheet({ serviceName, brandColor, onClose, onSubmit }: BottomSheetProps) {
   const [value, setValue] = useState("");
 
   const handleSubmit = () => {
@@ -25,11 +24,11 @@ export function BottomSheet({ serviceName, serviceId, brandColor, onClose, onSub
         onClick={(e) => e.stopPropagation()}
       >
         <h3 style={styles.sheetTitle}>Connect {serviceName}</h3>
-        <p style={styles.sheetSubtitle}>{serviceId === "linkedin" ? "Paste your LinkedIn profile URL" : `Enter your ${serviceName} username`}</p>
+        <p style={styles.sheetSubtitle}>Enter your {serviceName} username</p>
 
         <input
           type="text"
-          placeholder={serviceId === "linkedin" ? "https://linkedin.com/in/..." : "@username"}
+          placeholder="@username"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           style={styles.input}

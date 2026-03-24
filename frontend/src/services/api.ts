@@ -13,6 +13,7 @@ export async function connectService(service: string, username: string): Promise
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ service, username }),
   });
+  if (!res.ok) throw new Error(`Connect failed: ${res.status}`);
   return res.json();
 }
 
@@ -30,6 +31,7 @@ export async function analyzeUser(identifiers: Record<string, string | null>): P
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ identifiers }),
   });
+  if (!res.ok) throw new Error(`Analysis failed: ${res.status}`);
   return res.json();
 }
 
@@ -48,10 +50,10 @@ export interface MatchRequest {
 }
 
 export interface CoachingResponse {
-  venues: any[];
-  coaching_a: any;
-  coaching_b: any;
-  cross_ref: any;
+  venues: Record<string, unknown>[];
+  coaching_a: Record<string, unknown>;
+  coaching_b: Record<string, unknown>;
+  cross_ref: Record<string, unknown>;
 }
 
 export async function runPipeline(request: MatchRequest): Promise<CoachingResponse> {

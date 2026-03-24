@@ -4,12 +4,13 @@ import { COLORS, SURFACE, FONT_FAMILY, FONT_MONO } from "../ConnectAccounts/styl
 import { SwipeCard, HeartIcon, XMarkIcon, StarIcon } from "./SwipeCard";
 import type { Tab, MatchProfile, DateEntry, AnalysisData } from "./types";
 import { MOCK_PROFILES, MATCHES, page, frame, actionBtn } from "./constants";
-import { HeartOutlineIcon, FlameIcon, CalendarIcon, PersonIcon } from "./icons";
+import { HeartOutlineIcon, FlameIcon, CalendarIcon, PersonIcon, CupidIcon } from "./icons";
 import { MatchProfileDetail } from "./MatchProfileDetail";
 import { MatchesView } from "./MatchesView";
 import { DateDetailView } from "./DateDetailView";
 import { DatesView } from "./DatesView";
 import { ProfileView } from "./ProfileView";
+import { CoachView, CoachChatView } from "./CoachView";
 
 export function SwipeScreen({ userPhoto, userName, analysisData, identifiers }: {
   userPhoto?: string | null;
@@ -25,6 +26,7 @@ export function SwipeScreen({ userPhoto, userName, analysisData, identifiers }: 
   const [viewingProfile, setViewingProfile] = useState<MatchProfile | null>(null);
   const [planDateIdx, setPlanDateIdx] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<DateEntry | null>(null);
+  const [coachMatch, setCoachMatch] = useState<MatchProfile | null>(null);
 
   const handleSwipeLeft = useCallback(() => {
     setCurrentIndex((prev) => prev + 1);
@@ -160,6 +162,8 @@ export function SwipeScreen({ userPhoto, userName, analysisData, identifiers }: 
             }}
           />
         )}
+        {activeTab === "coach" && !coachMatch && <CoachView userName={userName || ""} analysisData={analysisData} onSelectMatch={(m) => setCoachMatch(m)} />}
+        {activeTab === "coach" && coachMatch && <CoachChatView match={coachMatch} userName={userName || ""} analysisData={analysisData} onBack={() => setCoachMatch(null)} />}
         {activeTab === "dates" && !selectedDate && <DatesView onSelectDate={(d) => setSelectedDate(d)} />}
         {activeTab === "dates" && selectedDate && <DateDetailView dateEntry={selectedDate} userName={userName || ""} onBack={() => setSelectedDate(null)} analysisData={analysisData} />}
         {activeTab === "profile" && <ProfileView userName={userName} userPhoto={userPhoto} analysisData={analysisData} identifiers={identifiers} />}
@@ -192,6 +196,7 @@ export function SwipeScreen({ userPhoto, userName, analysisData, identifiers }: 
           {([
             { id: "swipe" as Tab, icon: FlameIcon, label: "Discover" },
             { id: "matches" as Tab, icon: HeartOutlineIcon, label: "Matches" },
+            { id: "coach" as Tab, icon: CupidIcon, label: "Coach" },
             { id: "dates" as Tab, icon: CalendarIcon, label: "Dates" },
             { id: "profile" as Tab, icon: PersonIcon, label: "Profile" },
           ]).map((tab) => {
@@ -209,7 +214,7 @@ export function SwipeScreen({ userPhoto, userName, analysisData, identifiers }: 
                   flexDirection: "column",
                   alignItems: "center",
                   gap: 4,
-                  padding: "4px 16px",
+                  padding: "4px 10px",
                 }}
               >
                 <tab.icon size={22} color={color} />

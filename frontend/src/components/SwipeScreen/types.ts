@@ -1,4 +1,4 @@
-export type Tab = "swipe" | "matches" | "dates" | "profile";
+export type Tab = "swipe" | "matches" | "coach" | "dates" | "profile";
 
 export type MatchPhase = "grid" | "confirm" | "analyzing" | "suggestion" | "sent";
 

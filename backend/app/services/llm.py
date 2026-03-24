@@ -295,6 +295,3 @@ class LLMService:
 
         response = await self._llm.ainvoke(messages)
         return response.content.strip()
-
-    async def analyze_image(self, image_url: str) -> dict:
-        return {}

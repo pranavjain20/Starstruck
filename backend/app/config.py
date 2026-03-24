@@ -2,17 +2,12 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    anthropic_api_key: str = ""
     gemini_api_key: str = ""
-    spotify_client_id: str = ""
-    spotify_client_secret: str = ""
     google_maps_api_key: str = ""
     github_token: str = ""
-    redis_url: str = "redis://localhost:6379"
-    database_url: str = ""
     cors_origins: list[str] = ["http://localhost:5173", "https://starstruck-eta.vercel.app"]
 
-    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+    model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 
 
 settings = Settings()

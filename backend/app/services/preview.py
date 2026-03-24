@@ -46,7 +46,7 @@ def linkedin_preview(data: dict, username: str = "") -> str:
     return f"linkedin.com/in/{username}" if username else "Profile connected"
 
 
-PREVIEW_GENERATORS: dict[str, callable] = {
+PREVIEW_GENERATORS: dict[str, object] = {
     "github": github_preview,
     "letterboxd": letterboxd_preview,
     "spotify": spotify_preview,

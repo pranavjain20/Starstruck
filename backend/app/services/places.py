@@ -1,5 +1,10 @@
+import logging
+
 import httpx
 from app.config import settings
+
+logger = logging.getLogger(__name__)
+
 
 class PlacesService:
     def __init__(self):
@@ -12,7 +17,7 @@ class PlacesService:
         Requires GOOGLE_MAPS_API_KEY.
         """
         if not self.api_key:
-            print("⚠️ No GOOGLE_MAPS_API_KEY found. Returning mock data.")
+            logger.info("No GOOGLE_MAPS_API_KEY set, returning mock data")
             return [{"name": f"Mock {query}", "address": "123 Discovery Way", "rating": 4.5}]
 
         headers = {
@@ -20,21 +25,20 @@ class PlacesService:
             "X-Goog-Api-Key": self.api_key,
             "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.rating,places.priceLevel,places.types,places.regularOpeningHours"
         }
-        
+
         data = {
             "textQuery": f"{query} in {location}" if location else query
         }
 
         async with httpx.AsyncClient() as client:
             resp = await client.post(self.base_url, json=data, headers=headers)
-            
+
             if resp.status_code != 200:
-                print(f"Error calling Places API: {resp.text}")
+                logger.warning("Places API error %d: %s", resp.status_code, resp.text)
                 return []
-            
+
             results = resp.json().get("places", [])
-            
-            # Map to something the VenueRecommendation schema likes
+
             formatted = []
             for p in results:
                 formatted.append({

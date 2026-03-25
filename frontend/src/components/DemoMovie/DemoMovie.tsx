@@ -44,7 +44,7 @@ const SCENES: Scene[] = [
   { duration: 8000, label: "Swipe & Match" },
   { duration: 4500, label: "Match Details" },
   { duration: 5000, label: "AI Coach" },
-  { duration: 6000, label: "Plan a Date" },
+  { duration: 7500, label: "Plan a Date" },
   { duration: 4000, label: "" },
 ];
 
@@ -490,9 +490,9 @@ export function DemoMovie({ onExit }: { onExit: () => void }) {
 
       // Scene 9: Date Planning
       case 9: {
-        const planning = sceneProgress < 0.5;
-        const showVenue = sceneProgress >= 0.5;
-        const planProgress = planning ? (sceneProgress / 0.5) * 100 : 100;
+        const planning = sceneProgress < 0.35;
+        const showVenue = sceneProgress >= 0.35;
+        const planProgress = planning ? (sceneProgress / 0.35) * 100 : 100;
         return (
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             {planning ? (

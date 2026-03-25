@@ -6,6 +6,7 @@ const FONT_MONO = "'JetBrains Mono', 'SF Mono', monospace";
 interface LandingProps {
   onCreateProfile: () => void;
   onTryDemo: () => void;
+  onWatchDemo?: () => void;
 }
 
 const FLOATING_ICONS = [
@@ -19,7 +20,7 @@ const FLOATING_ICONS = [
   { emoji: "🎯", x: 6, y: 82, size: 18, delay: 2, duration: 5.8 },
 ];
 
-export function Landing({ onCreateProfile, onTryDemo }: LandingProps) {
+export function Landing({ onCreateProfile, onTryDemo, onWatchDemo }: LandingProps) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
@@ -274,6 +275,39 @@ export function Landing({ onCreateProfile, onTryDemo }: LandingProps) {
           >
             Create Your Profile
           </button>
+          {onWatchDemo && (
+            <button
+              onClick={onWatchDemo}
+              style={{
+                width: "100%",
+                height: 56,
+                borderRadius: 28,
+                border: `1px solid ${"#FF4466"}30`,
+                background: `${"#FF4466"}0A`,
+                backdropFilter: "blur(20px)",
+                color: "#FF4466",
+                fontSize: 16,
+                fontWeight: 600,
+                fontFamily: FONT_FAMILY,
+                letterSpacing: 0.3,
+                cursor: "pointer",
+                marginBottom: 14,
+                transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `${"#FF4466"}15`;
+                e.currentTarget.style.borderColor = `${"#FF4466"}50`;
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = `${"#FF4466"}0A`;
+                e.currentTarget.style.borderColor = `${"#FF4466"}30`;
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              Watch Demo
+            </button>
+          )}
           <button
             onClick={onTryDemo}
             style={{

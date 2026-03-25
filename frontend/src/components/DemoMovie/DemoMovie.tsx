@@ -296,99 +296,99 @@ export function DemoMovie({ onExit }: { onExit: () => void }) {
         );
       }
 
-      // Scene 6: Swipe & Match (view Ava → NOPE → view Luna → LIKE → match)
+      // Scene 6: Swipe & Match (view Ava → X button press → view Luna → heart button press → match)
       case 6: {
-        // Timeline: 0-0.2 view first card | 0.2-0.35 swipe left | 0.35-0.55 view second card | 0.55-0.7 swipe right | 0.7+ match overlay
-        const phase1View = sceneProgress < 0.2;
-        const phase1Swipe = sceneProgress >= 0.2 && sceneProgress < 0.35;
-        const phase2View = sceneProgress >= 0.35 && sceneProgress < 0.55;
-        const phase2Swipe = sceneProgress >= 0.55 && sceneProgress < 0.7;
+        // Timeline: 0-0.2 view Ava | 0.2-0.25 X press | 0.25-0.35 card exits left | 0.35-0.55 view Luna | 0.55-0.6 heart press | 0.6-0.7 card exits right | 0.7+ match
+        const xBtnPress = sceneProgress >= 0.2 && sceneProgress < 0.25;
+        const card1Exit = sceneProgress >= 0.25 && sceneProgress < 0.35;
+        const heartBtnPress = sceneProgress >= 0.55 && sceneProgress < 0.6;
+        const card2Exit = sceneProgress >= 0.6 && sceneProgress < 0.7;
         const matchOverlay = sceneProgress >= 0.7;
         const matchText = sceneProgress >= 0.8;
 
-        // First card (Ava) swipes left
-        const card1Progress = phase1Swipe ? (sceneProgress - 0.2) / 0.15 : 0;
-        const card1X = phase1Swipe ? -card1Progress * 400 : 0;
+        // Card 1 (Ava): still until X pressed, then exits left
         const card1Visible = sceneProgress < 0.35;
-        const nopeOpacity = Math.min(1, Math.abs(card1X) / 100);
+        const card1X = card1Exit ? -((sceneProgress - 0.25) / 0.1) * 500 : 0;
 
-        // Second card (Luna) swipes right
-        const card2Progress = phase2Swipe ? (sceneProgress - 0.55) / 0.15 : 0;
-        const card2X = phase2Swipe ? card2Progress * 400 : 0;
+        // Card 2 (Luna): still until heart pressed, then exits right
         const card2Visible = sceneProgress >= 0.35 && sceneProgress < 0.7;
-        const likeOpacity = Math.min(1, card2X / 100);
+        const card2X = card2Exit ? ((sceneProgress - 0.6) / 0.1) * 500 : 0;
 
-        const cardStyle = (x: number, visible: boolean): React.CSSProperties => ({
-          position: "absolute",
-          inset: "12px 16px",
-          borderRadius: 20,
-          overflow: "hidden",
-          transform: `translateX(${x}px) rotate(${x * 0.08}deg)`,
-          opacity: visible ? Math.max(0, 1 - Math.abs(x) / 400) : 0,
-          transition: visible ? "none" : "opacity 0.15s",
-        });
+        // Stamps appear on button press, stay through exit
+        const nopeStamp = sceneProgress >= 0.2 && sceneProgress < 0.35;
+        const likeStamp = sceneProgress >= 0.55 && sceneProgress < 0.7;
 
         const stampBase: React.CSSProperties = {
           position: "absolute", top: 40, fontSize: 36, fontWeight: 800, fontFamily: FONT_FAMILY,
           padding: "6px 16px", borderRadius: 8, border: "3px solid", letterSpacing: 2, textTransform: "uppercase",
         };
 
-        return (
-          <div style={{ flex: 1, position: "relative" }}>
-            {/* First card: Ava */}
-            {card1Visible && (
-              <div style={cardStyle(card1X, card1Visible)}>
-                <img src="/profile_photos/1.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
-                <div style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>Ava</span>
-                  <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>26</span>
-                </div>
-                {nopeOpacity > 0 && (
-                  <div style={{ ...stampBase, right: 24, color: COLORS.hotFuchsia, borderColor: COLORS.hotFuchsia, transform: "rotate(15deg)", opacity: nopeOpacity }}>Nope</div>
-                )}
-              </div>
-            )}
+        const btnStyle = (color: string, pressed: boolean): React.CSSProperties => ({
+          width: 56, height: 56, borderRadius: 28,
+          background: pressed ? `${color}40` : `${color}15`,
+          border: `2px solid ${pressed ? color : `${color}40`}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transform: pressed ? "scale(0.85)" : "scale(1)",
+          transition: "all 0.15s ease",
+        });
 
-            {/* Second card: Luna */}
-            {card2Visible && (
-              <div className={phase2View && !phase2Swipe ? "card-enter" : ""} style={cardStyle(card2X, card2Visible)}>
-                <img src={DEMO_MATCH.photo} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
-                <div style={{ position: "absolute", bottom: 20, left: 20 }}>
-                  <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>{DEMO_MATCH.name}</span>
-                  <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>{DEMO_MATCH.age}</span>
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+            {/* Card area */}
+            <div style={{ flex: 1, position: "relative", margin: "12px 16px", overflow: "hidden" }}>
+              {/* Ava */}
+              {card1Visible && (
+                <div style={{
+                  position: "absolute", inset: 0, borderRadius: 20, overflow: "hidden",
+                  transform: `translateX(${card1X}px) rotate(${card1X * 0.06}deg)`,
+                  opacity: Math.max(0, 1 - Math.abs(card1X) / 400),
+                  transition: card1Exit ? "none" : "transform 0.3s ease",
+                }}>
+                  <img src="/profile_photos/1.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
+                  <div style={{ position: "absolute", bottom: 20, left: 20 }}>
+                    <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>Ava</span>
+                    <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>26</span>
+                  </div>
+                  {nopeStamp && (
+                    <div style={{ ...stampBase, right: 24, color: COLORS.hotFuchsia, borderColor: COLORS.hotFuchsia, transform: "rotate(15deg)" }}>Nope</div>
+                  )}
                 </div>
-                {likeOpacity > 0 && (
-                  <div style={{ ...stampBase, left: 24, color: COLORS.limeCreem, borderColor: COLORS.limeCreem, transform: "rotate(-15deg)", opacity: likeOpacity }}>Like</div>
-                )}
-              </div>
-            )}
+              )}
+
+              {/* Luna */}
+              {card2Visible && (
+                <div className={!card2Exit ? "card-enter" : ""} style={{
+                  position: "absolute", inset: 0, borderRadius: 20, overflow: "hidden",
+                  transform: `translateX(${card2X}px) rotate(${card2X * 0.06}deg)`,
+                  opacity: Math.max(0, 1 - Math.abs(card2X) / 400),
+                  transition: card2Exit ? "none" : "transform 0.3s ease",
+                }}>
+                  <img src={DEMO_MATCH.photo} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
+                  <div style={{ position: "absolute", bottom: 20, left: 20 }}>
+                    <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>{DEMO_MATCH.name}</span>
+                    <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>{DEMO_MATCH.age}</span>
+                  </div>
+                  {likeStamp && (
+                    <div style={{ ...stampBase, left: 24, color: COLORS.limeCreem, borderColor: COLORS.limeCreem, transform: "rotate(-15deg)" }}>Like</div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Action buttons */}
             {!matchOverlay && (
               <div style={{
-                position: "absolute", bottom: 16, left: 0, right: 0, zIndex: 5,
                 display: "flex", justifyContent: "center", alignItems: "center", gap: 20,
+                padding: "12px 0 28px", zIndex: 5,
               }}>
-                <div style={{
-                  width: 56, height: 56, borderRadius: 28,
-                  background: phase1Swipe ? `${COLORS.hotFuchsia}30` : `${COLORS.hotFuchsia}15`,
-                  border: `2px solid ${COLORS.hotFuchsia}40`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "background 0.2s",
-                }}>
+                <div style={btnStyle(COLORS.hotFuchsia, xBtnPress)}>
                   <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={COLORS.hotFuchsia} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </div>
-                <div style={{
-                  width: 56, height: 56, borderRadius: 28,
-                  background: phase2Swipe ? `${COLORS.limeCreem}30` : `${COLORS.limeCreem}15`,
-                  border: `2px solid ${COLORS.limeCreem}40`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "background 0.2s",
-                }}>
+                <div style={btnStyle(COLORS.limeCreem, heartBtnPress)}>
                   <svg width={26} height={26} viewBox="0 0 24 24" fill={COLORS.limeCreem} stroke="none">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                   </svg>

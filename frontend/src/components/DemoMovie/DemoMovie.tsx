@@ -269,7 +269,11 @@ export function DemoMovie({ onExit }: { onExit: () => void }) {
         return (
           <div style={{ flex: 1, overflowY: "auto", padding: "0 24px 24px" }}>
             <StepHeader step="Step 3 of 4" title="Your profile" />
-            <div style={{ ...CARD, marginTop: 20, marginBottom: 16 }}>
+            <div className="card-enter" style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 16, marginBottom: 12 }}>
+              <img src={DEMO_USER.photo} alt="" style={{ width: 80, height: 80, borderRadius: 40, objectFit: "cover", border: `2px solid ${COLORS.softPeriwinkle}40`, marginBottom: 10 }} />
+              <span style={{ fontSize: 20, fontWeight: 800, color: SURFACE.textPrimary }}>{DEMO_USER.name}</span>
+            </div>
+            <div style={{ ...CARD, marginBottom: 16 }}>
               <div style={{ fontSize: 15, color: SURFACE.textPrimary, fontStyle: "italic", lineHeight: 1.5 }}>
                 &ldquo;{DEMO_ANALYSIS.bio}&rdquo;
               </div>
@@ -358,6 +362,37 @@ export function DemoMovie({ onExit }: { onExit: () => void }) {
                 {likeOpacity > 0 && (
                   <div style={{ ...stampBase, left: 24, color: COLORS.limeCreem, borderColor: COLORS.limeCreem, transform: "rotate(-15deg)", opacity: likeOpacity }}>Like</div>
                 )}
+              </div>
+            )}
+
+            {/* Action buttons */}
+            {!matchOverlay && (
+              <div style={{
+                position: "absolute", bottom: 16, left: 0, right: 0, zIndex: 5,
+                display: "flex", justifyContent: "center", alignItems: "center", gap: 20,
+              }}>
+                <div style={{
+                  width: 56, height: 56, borderRadius: 28,
+                  background: phase1Swipe ? `${COLORS.hotFuchsia}30` : `${COLORS.hotFuchsia}15`,
+                  border: `2px solid ${COLORS.hotFuchsia}40`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "background 0.2s",
+                }}>
+                  <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={COLORS.hotFuchsia} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </div>
+                <div style={{
+                  width: 56, height: 56, borderRadius: 28,
+                  background: phase2Swipe ? `${COLORS.limeCreem}30` : `${COLORS.limeCreem}15`,
+                  border: `2px solid ${COLORS.limeCreem}40`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "background 0.2s",
+                }}>
+                  <svg width={26} height={26} viewBox="0 0 24 24" fill={COLORS.limeCreem} stroke="none">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </div>
               </div>
             )}
 

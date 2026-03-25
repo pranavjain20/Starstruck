@@ -9,6 +9,8 @@ interface ProfileAnalysisProps {
   onBack?: () => void;
   identifiers?: Record<string, string | null>;
   demoMode?: boolean;
+  userPhoto?: string | null;
+  userName?: string;
 }
 
 const ANALYSIS_STEPS = [
@@ -63,7 +65,7 @@ function RefreshIcon({ size = 18, color = "currentColor" }: { size?: number; col
   );
 }
 
-export function ProfileAnalysis({ onContinue, onBack, identifiers, demoMode }: ProfileAnalysisProps) {
+export function ProfileAnalysis({ onContinue, onBack, identifiers, demoMode, userPhoto, userName }: ProfileAnalysisProps) {
   const [analyzing, setAnalyzing] = useState(true);
   const [progress, setProgress] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
@@ -221,6 +223,14 @@ export function ProfileAnalysis({ onContinue, onBack, identifiers, demoMode }: P
             </div>
           ) : (
             <>
+              {/* ── User photo + name ── */}
+              {userPhoto && (
+                <div className="card-enter" style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 24px 0" }}>
+                  <img src={userPhoto} alt={userName || "Profile"} style={{ width: 80, height: 80, borderRadius: 40, objectFit: "cover", border: `2px solid ${COLORS.softPeriwinkle}40`, marginBottom: 10 }} />
+                  {userName && <span style={{ fontSize: 20, fontWeight: 800, color: SURFACE.textPrimary }}>{userName}</span>}
+                </div>
+              )}
+
               {/* ── Suggested bio ── */}
               <div className="card-enter" style={{ padding: "24px 24px 0" }}>
                 <div style={{

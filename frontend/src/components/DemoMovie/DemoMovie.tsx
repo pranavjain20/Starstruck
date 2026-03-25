@@ -41,7 +41,7 @@ const SCENES: Scene[] = [
   { duration: 2500, label: "Connect Letterboxd" },
   { duration: 4000, label: "AI Analysis" },
   { duration: 3500, label: "Your Profile" },
-  { duration: 4000, label: "Swipe & Match" },
+  { duration: 7000, label: "Swipe & Match" },
   { duration: 3500, label: "Match Details" },
   { duration: 4000, label: "AI Coach" },
   { duration: 3500, label: "Plan a Date" },
@@ -292,40 +292,74 @@ export function DemoMovie({ onExit }: { onExit: () => void }) {
         );
       }
 
-      // Scene 6: Swipe & Match
+      // Scene 6: Swipe & Match (view Ava → NOPE → view Luna → LIKE → match)
       case 6: {
-        const swiping = sceneProgress < 0.4;
-        const matchOverlay = sceneProgress >= 0.4;
-        const matchText = sceneProgress >= 0.6;
-        const swipeX = swiping ? Math.min(1, sceneProgress / 0.35) * 400 : 400;
-        const likeOpacity = Math.min(1, swipeX / 100);
+        // Timeline: 0-0.2 view first card | 0.2-0.35 swipe left | 0.35-0.55 view second card | 0.55-0.7 swipe right | 0.7+ match overlay
+        const phase1View = sceneProgress < 0.2;
+        const phase1Swipe = sceneProgress >= 0.2 && sceneProgress < 0.35;
+        const phase2View = sceneProgress >= 0.35 && sceneProgress < 0.55;
+        const phase2Swipe = sceneProgress >= 0.55 && sceneProgress < 0.7;
+        const matchOverlay = sceneProgress >= 0.7;
+        const matchText = sceneProgress >= 0.8;
+
+        // First card (Ava) swipes left
+        const card1Progress = phase1Swipe ? (sceneProgress - 0.2) / 0.15 : 0;
+        const card1X = phase1Swipe ? -card1Progress * 400 : 0;
+        const card1Visible = sceneProgress < 0.35;
+        const nopeOpacity = Math.min(1, Math.abs(card1X) / 100);
+
+        // Second card (Luna) swipes right
+        const card2Progress = phase2Swipe ? (sceneProgress - 0.55) / 0.15 : 0;
+        const card2X = phase2Swipe ? card2Progress * 400 : 0;
+        const card2Visible = sceneProgress >= 0.35 && sceneProgress < 0.7;
+        const likeOpacity = Math.min(1, card2X / 100);
+
+        const cardStyle = (x: number, visible: boolean): React.CSSProperties => ({
+          position: "absolute",
+          inset: "12px 16px",
+          borderRadius: 20,
+          overflow: "hidden",
+          transform: `translateX(${x}px) rotate(${x * 0.08}deg)`,
+          opacity: visible ? Math.max(0, 1 - Math.abs(x) / 400) : 0,
+          transition: visible ? "none" : "opacity 0.15s",
+        });
+
+        const stampBase: React.CSSProperties = {
+          position: "absolute", top: 40, fontSize: 36, fontWeight: 800, fontFamily: FONT_FAMILY,
+          padding: "6px 16px", borderRadius: 8, border: "3px solid", letterSpacing: 2, textTransform: "uppercase",
+        };
 
         return (
           <div style={{ flex: 1, position: "relative" }}>
-            {/* Card */}
-            <div style={{
-              position: "absolute",
-              inset: "12px 16px",
-              borderRadius: 20,
-              overflow: "hidden",
-              transform: `translateX(${swipeX}px) rotate(${swipeX * 0.08}deg)`,
-              opacity: swiping ? Math.max(0, 1 - swipeX / 400) : 0,
-              transition: swiping ? "none" : "opacity 0.2s",
-            }}>
-              <img src={DEMO_MATCH.photo} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
-              <div style={{ position: "absolute", bottom: 20, left: 20 }}>
-                <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>{DEMO_MATCH.name}</span>
-                <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>{DEMO_MATCH.age}</span>
+            {/* First card: Ava */}
+            {card1Visible && (
+              <div style={cardStyle(card1X, card1Visible)}>
+                <img src="/profile_photos/1.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
+                <div style={{ position: "absolute", bottom: 20, left: 20 }}>
+                  <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>Ava</span>
+                  <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>26</span>
+                </div>
+                {nopeOpacity > 0 && (
+                  <div style={{ ...stampBase, right: 24, color: COLORS.hotFuchsia, borderColor: COLORS.hotFuchsia, transform: "rotate(15deg)", opacity: nopeOpacity }}>Nope</div>
+                )}
               </div>
-              {likeOpacity > 0 && (
-                <div style={{
-                  position: "absolute", top: 40, left: 24, fontSize: 36, fontWeight: 800, fontFamily: FONT_FAMILY,
-                  padding: "6px 16px", borderRadius: 8, border: `3px solid ${COLORS.limeCreem}`,
-                  color: COLORS.limeCreem, transform: "rotate(-15deg)", opacity: likeOpacity, letterSpacing: 2, textTransform: "uppercase",
-                }}>Like</div>
-              )}
-            </div>
+            )}
+
+            {/* Second card: Luna */}
+            {card2Visible && (
+              <div className={phase2View && !phase2Swipe ? "card-enter" : ""} style={cardStyle(card2X, card2Visible)}>
+                <img src={DEMO_MATCH.photo} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)" }} />
+                <div style={{ position: "absolute", bottom: 20, left: 20 }}>
+                  <span style={{ fontSize: 28, fontWeight: 800, color: "#fff" }}>{DEMO_MATCH.name}</span>
+                  <span style={{ fontSize: 22, fontWeight: 400, color: "rgba(255,255,255,0.7)", marginLeft: 8 }}>{DEMO_MATCH.age}</span>
+                </div>
+                {likeOpacity > 0 && (
+                  <div style={{ ...stampBase, left: 24, color: COLORS.limeCreem, borderColor: COLORS.limeCreem, transform: "rotate(-15deg)", opacity: likeOpacity }}>Like</div>
+                )}
+              </div>
+            )}
 
             {/* Match overlay */}
             {matchOverlay && (

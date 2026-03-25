@@ -1,5 +1,7 @@
 # StarStruck
 
+*Built at Columbia University's Valentine's Day AI Hackathon.*
+
 AI-powered dating app that builds personality profiles from your real online presence. Instead of writing a bio, connect your GitHub, Instagram, or Letterboxd — the app scrapes your data, runs it through an LLM pipeline, and generates a personality profile based on who you actually are.
 
 **[Live Demo](https://starstruck-eta.vercel.app)**
@@ -163,4 +165,4 @@ pytest tests/ -v
 
 ## Author
 
-Built by Pranav Jain at Columbia University's Valentine's Day AI Hackathon.
+Built by Pranav Jain.
